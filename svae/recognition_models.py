@@ -31,8 +31,13 @@ def linear_recognize(x, psi):
     return make_tuple(-1./2*J, h, np.zeros(x.shape[0]))
 
 
-def init_linear_recognize(n, p, scale=1e-2):
-    return scale*npr.randn(p, n), scale*npr.randn(p, p)
+def init_linear_recognize(n, p, scale=1.0):
+    print("initializing: init_linear_recognize: (n,p) == ("+str(n)+", "+str(p)+")")
+    # second return value:
+    # see linear_decode: randn(p,)  for homoscedastic   predictions 
+    #                    randn(p,p) for heteroscedastic predictions
+    scale /= np.sqrt(float(n + p))
+    return scale*npr.randn(p, n), scale*npr.randn(p,) #randn(p, p)
 
 
 ### mlp recognition function

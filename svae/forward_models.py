@@ -27,7 +27,13 @@ def linear_decode(z, phi):
     z = z if z.ndim == 3 else z[:,None,:]  # ensure z.shape == (T, K, n)
 
     mu = np.dot(z, C.T)
-    log_sigmasq = np.tile(d[None,None,:], mu.shape[:2] + (1,))
+    if len(d.shape) == 1:
+        # homoscedastic linear decode
+        log_sigmasq = np.tile(d[None,None,:], mu.shape[:2] + (1,))
+    else:
+        # heteroscedastic linear decode
+        log_sigmasq = np.dot(z, d.T)
+    assert(np.shape(mu) == np.shape(log_sigmasq))
 
     shape = z.shape[:-1] + (-1,)
     return np.reshape(mu, shape), np.reshape(log_sigmasq, shape)

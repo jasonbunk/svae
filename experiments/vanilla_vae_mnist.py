@@ -1,4 +1,10 @@
 from __future__ import division, print_function
+import sys, os
+if os.path.exists('../svae'):
+    sys.path.insert(0, '..')
+    print("added .. to search path")
+else:
+    print("path ../svae does not exist")
 import numpy as np
 import numpy.random as npr
 

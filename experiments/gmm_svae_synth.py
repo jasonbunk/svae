@@ -1,6 +1,13 @@
 from __future__ import division, print_function
+import sys, os
+if os.path.exists('../svae'):
+    sys.path.insert(0, '..')
+    print("added .. to search path")
+else:
+    print("path ../svae does not exist")
 import numpy as np
 import numpy.random as npr
+import matplotlib
 import matplotlib.pyplot as plt
 from functools import partial
 
@@ -86,7 +93,10 @@ def plot(itr, axs, data, params):
 
     ## save plot
 
-    plt.savefig('figures/gmm_{:04d}.png'.format(itr), dpi=150)
+    figurespath = '../experiments/figures'
+    if not os.path.exists(figurespath):
+        os.makedirs(figurespath)
+    plt.savefig(os.path.join(figurespath,'gmm_{:04d}.png'.format(itr)), dpi=150)
     # plt.savefig('figures/gmm_{:04d}.png'.format(itr), dpi=150, transparent=True)
     # plt.pause(0.0001)
 
@@ -117,7 +127,8 @@ def make_pinwheel_data(radial_std, tangential_std, num_classes, num_per_class, r
 if __name__ == "__main__":
     npr.seed(1)
     from cycler import cycler
-    plt.rc('axes', prop_cycle=(cycler('color', ['blue', 'orange', 'red', 'cyan', 'magenta', 'yellow'])))
+    # plt.rc('axes', prop_cycle=(cycler('color', ['blue', 'orange', 'red', 'cyan', 'magenta', 'yellow'])))
+    matplotlib.rcParams['axes.color_cycle'] = ['blue', 'orange', 'red', 'cyan', 'magenta', 'yellow']
     # plt.ion()
 
     K = 15  # number of components in mixture model
